@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, Button, Image, StatusBar, Platform } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Button, Image, StatusBar, Platform,Pressable } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
 import { Video } from 'expo-av';
 import { shareAsync } from 'expo-sharing';
@@ -16,6 +16,7 @@ export default function VideoCamera({ setTogglePhotoVideoShort }) {
     const [hasMicrophonePermission, setHasMicrophonePermission] = useState();
     const [isRecording, setIsRecording] = useState(false);
     const [video, setVideo] = useState();
+    const [toggleFlash, setToggleFlash] = useState(false);
 
 
 
@@ -35,24 +36,25 @@ export default function VideoCamera({ setTogglePhotoVideoShort }) {
 
     let recordVideo = () => {
         setIsRecording(true)
-        let options = {
-            quality: '1080p',
-            maxDuration:6000,
-            mute: false,
-        }
-        cameraRef.current.recordAsync(options).then((recordedVideo) => {
-            setVideo(recordedVideo)
-            setIsRecording(false)
-        }).catch(() => {
-            setIsRecording(false)
-            alert(`can't record video now`)
-        })
-
+        setTimeout(()=>{
+            let options = {
+                quality: '1080p',
+                maxDuration:6000,
+                mute: false,
+            }
+            cameraRef.current.recordAsync(options).then((recordedVideo) => {
+                setVideo(recordedVideo)
+                setIsRecording(false)
+            }).catch(() => {
+                setIsRecording(false)
+                alert(`can't record video now`)
+            })
+        },500)
 
     }
     let stopRecording = () => {
-        setIsRecording(false)
         cameraRef.current.stopRecording()
+        setIsRecording(false)
     }
 
 
@@ -111,7 +113,27 @@ export default function VideoCamera({ setTogglePhotoVideoShort }) {
     return (
         <>
             <SafeAreaView style={styles.SafeAreaView} />
-            <Camera ref={cameraRef} type={type} style={styles.camera_container}>
+            {!isRecording && <View style={{ backgroundColor: "black" }}>
+                <Pressable onPress={() => setToggleFlash(!toggleFlash)}>
+                    {toggleFlash ? (
+                        <Image
+                            style={{ height: 35, width: 35 }}
+                            source={{ uri: "https://img.icons8.com/color/1x/flash-on.png" }}
+                        />
+                    ) : (
+                        <Image
+                            style={{ height: 35, width: 35 }}
+                            source={require("../../../assets/flash_off.png")}
+                        />
+                    )}
+                </Pressable>
+            </View>}
+            <Camera
+             flashMode={
+                toggleFlash ?
+                    Camera.Constants.FlashMode.torch
+                    : Camera.Constants.FlashMode.off
+            } ref={cameraRef} type={type} style={styles.camera_container}>
                 {isRecording && <TimeCounter />}
                 {/* <TimeCounter/> */}
                 <View style={styles.camera_Bottom}>

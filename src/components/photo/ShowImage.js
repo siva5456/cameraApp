@@ -1,30 +1,45 @@
-import React, { useEffect } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, Image,Pressable } from 'react-native';
-import { shareAsync } from 'expo-sharing';
+import React, { useEffect } from "react";
+import {
+    StyleSheet,
+    Text,
+    View,
+    SafeAreaView,
+    Image,
+    Pressable,
+    StatusBar,
+} from "react-native";
+import { shareAsync } from "expo-sharing";
 
-
-function ShowImage({ route, navigation }) {
-    const { photo } = route.params
+function ShowImage({ }) {
     let sharePic = () => {
-        shareAsync(photo)
-            .then(() => {
-            })
-    }
-    useEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (<Pressable onPress={sharePic} style={{ margin: 9 }} >
-                <Image style={{ height: 30, width: 30, }} source={{ uri: 'https://img.icons8.com/glyph-neue/1x/share-3.png' }} />
-                <Text style={{ fontSize: 11, marginTop: -5, marginLeft: 3, color: 'silver' }}>share</Text>
-            </Pressable>)
-        });
-    }, [])
-   
+        shareAsync().then(() => { });
+    };
 
     return (
-        <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-end', }} >
-            <Image style={{ alignSelf: 'stretch', flex: 1, }} source={{ uri: photo }} />
+        <SafeAreaView style={styles.SafeAreaView}>
+            <View style={styles.container}>
+                <Image
+                    style={{ alignSelf: "stretch", flex: 1 }}
+                    source={{
+                        uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQa7ObT7V5LMOQWpMfh10OxxF2VeWCNXszlq2oI7ivRJw&usqp=CAU&ec=48665701",
+                    }}
+                />
+            </View>
         </SafeAreaView>
-    )
+    );
 }
+const styles = StyleSheet.create({
+    container: {
+        flex: 0.9,
+        backgroundColor: "black",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    SafeAreaView: {
+        flex: 1,
+        marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        backgroundColor: "yellow",
+    },
+});
 
-export default ShowImage
+export default ShowImage;

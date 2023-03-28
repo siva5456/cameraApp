@@ -17,9 +17,9 @@ function MyCamera({ navigation }) {
             return <PhotoCamera setTogglePhotoVideoShort={setTogglePhotoVideoShort} navigation={navigation} />
         case 'video':
             return <VideoCamera setTogglePhotoVideoShort={setTogglePhotoVideoShort} navigation={navigation} />
-            case 'ShortVideoCamera':
-                return <ShortVideoCamera setTogglePhotoVideoShort={setTogglePhotoVideoShort} navigation={navigation} />
-    
+        case 'ShortVideoCamera':
+            return <ShortVideoCamera setTogglePhotoVideoShort={setTogglePhotoVideoShort} navigation={navigation} />
+
         default:
             return <PhotoCamera setTogglePhotoVideoShort={setTogglePhotoVideoShort} navigation={navigation} />
     }
