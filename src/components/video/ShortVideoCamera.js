@@ -46,7 +46,7 @@ export default function ShortVideoCamera({ setTogglePhotoVideoShort }) {
 
     let recordVideo = () => {
         setIsRecording(true);
-        setTimeout(()=>{
+        setTimeout(() => {
             let options = {
                 quality: "1080p",
                 maxDuration: 20,
@@ -62,8 +62,7 @@ export default function ShortVideoCamera({ setTogglePhotoVideoShort }) {
                     setIsRecording(false);
                     alert(`can't record video now`);
                 });
-        },500)
-        
+        }, 500);
     };
     let stopRecording = () => {
         cameraRef.current.stopRecording();
@@ -129,21 +128,23 @@ export default function ShortVideoCamera({ setTogglePhotoVideoShort }) {
     return (
         <>
             <SafeAreaView style={styles.SafeAreaView} />
-           {!isRecording && <View style={{ backgroundColor: "black" }}>
-                <Pressable onPress={() => setToggleFlash(!toggleFlash)}>
-                    {toggleFlash ? (
-                        <Image
-                            style={{ height: 35, width: 35 }}
-                            source={{ uri: "https://img.icons8.com/color/1x/flash-on.png" }}
-                        />
-                    ) : (
-                        <Image
-                            style={{ height: 35, width: 35 }}
-                            source={require("../../../assets/flash_off.png")}
-                        />
-                    )}
-                </Pressable>
-            </View>}
+            {!isRecording && (
+                <View style={{ backgroundColor: "black" }}>
+                    <Pressable onPress={() => setToggleFlash(!toggleFlash)}>
+                        {toggleFlash ? (
+                            <Image
+                                style={{ height: 35, width: 35 }}
+                                source={{ uri: "https://img.icons8.com/color/1x/flash-on.png" }}
+                            />
+                        ) : (
+                            <Image
+                                style={{ height: 35, width: 35 }}
+                                source={require("../../../assets/flash_off.png")}
+                            />
+                        )}
+                    </Pressable>
+                </View>
+            )}
             <Camera
                 flashMode={
                     toggleFlash

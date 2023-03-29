@@ -20,7 +20,8 @@ function PhotoCamera({ navigation, setTogglePhotoVideoShort }) {
     const [permission, requestPermission] = Camera.useCameraPermissions();
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
     const [photo, setPhoto] = useState(undefined);
-    const [lastphoto, setLastphoto] = useState(null);
+    const [album, setAlbum] = useState(false);
+
     const [toggleFlash, setToggleFlash] = useState(false);
     const [captureFlash, setCaptureFlash] = useState(false);
 
@@ -32,6 +33,22 @@ function PhotoCamera({ navigation, setTogglePhotoVideoShort }) {
         );
     };
 
+    const getAlbum = async () => {
+        const DCIM = await MediaLibrary.getAlbumAsync("DCIM");
+        // console.log(DCIM);
+        // alert('rendered')
+
+        if (DCIM) {
+            const response = await MediaLibrary.getAssetsAsync(DCIM.id);
+            // console.log(response.assets[0]);
+            setAlbum(response.assets[0]);
+        }
+    };
+    // console.log(album.uri);
+    useEffect(() => {
+        getAlbum();
+    }, []);
+
     let takePic = async () => {
         setCaptureFlash(true);
         let options = {
@@ -42,7 +59,6 @@ function PhotoCamera({ navigation, setTogglePhotoVideoShort }) {
         let newPhoto = await cameraRef.current.takePictureAsync(options);
         setPhoto(newPhoto);
         setCaptureFlash(false);
-       
     };
 
     useEffect(() => {
@@ -75,7 +91,6 @@ function PhotoCamera({ navigation, setTogglePhotoVideoShort }) {
 
         let savePic = () => {
             MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
-                setLastphoto(photo.uri);
                 setPhoto(undefined);
             });
         };
@@ -101,10 +116,7 @@ function PhotoCamera({ navigation, setTogglePhotoVideoShort }) {
                     {hasMediaLibraryPermission && (
                         <Button title="save" onPress={savePic} />
                     )}
-                    <Button
-                        title="Discard"
-                        onPress={() => (setPhoto(undefined))}
-                    />
+                    <Button title="Discard" onPress={() => setPhoto(undefined)} />
                 </View>
             </SafeAreaView>
         );
@@ -167,21 +179,26 @@ function PhotoCamera({ navigation, setTogglePhotoVideoShort }) {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.camera_Bottom_Recod_Buttons}>
-                    {lastphoto ? (
+                    {album ? (
                         <TouchableOpacity
-                            onPress={() => navigation.navigate("photo", { photo: lastphoto })}
+                            onPress={() => setTogglePhotoVideoShort("ShowImage")}
                             style={styles.last_image_View}
                         >
-                            <Image style={styles.last_image} source={{ uri: lastphoto }} />
+                            <View style={styles.last_image_toch_view}>
+                                <Image
+                                    style={styles.last_image}
+                                    source={{ uri: `${album.uri}` }}
+                                />
+                            </View>
                         </TouchableOpacity>
                     ) : (
                         <View style={styles.last_image_View}>
-                            <Image
+                            {/* <Image
                                 style={styles.last_image}
                                 source={{
                                     uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQa7ObT7V5LMOQWpMfh10OxxF2VeWCNXszlq2oI7ivRJw&usqp=CAU&ec=48665701",
                                 }}
-                            />
+                            /> */}
                         </View>
                     )}
                     <TouchableOpacity onPress={takePic} style={styles.capture}>
@@ -262,9 +279,16 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     last_image: {
+        height: 37,
+        width: 37,
+        borderRadius: 50,
+    },
+    last_image_toch_view: {
         height: 40,
         width: 40,
         borderRadius: 50,
+        borderWidth: 1,
+        borderColor: "#fff",
     },
     last_image_View: {
         height: 60,
