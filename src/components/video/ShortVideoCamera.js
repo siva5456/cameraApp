@@ -67,6 +67,8 @@ export default function ShortVideoCamera({ setTogglePhotoVideoShort }) {
     let stopRecording = () => {
         cameraRef.current.stopRecording();
         setIsRecording(false);
+        setToggleFlash(false)
+
     };
 
     if (!permission || hasMicrophonePermission === undefined) {
@@ -92,6 +94,7 @@ export default function ShortVideoCamera({ setTogglePhotoVideoShort }) {
         let saveVideo = () => {
             MediaLibrary.saveToLibraryAsync(video.uri).then(() => {
                 setVideo(undefined);
+
             });
         };
 
@@ -104,7 +107,7 @@ export default function ShortVideoCamera({ setTogglePhotoVideoShort }) {
                     source={{ uri: video.uri }}
                     useNativeControls
                     resizeMode="contain"
-                    isLooping
+                    // isLooping
                 />
                 <View
                     style={{
@@ -155,7 +158,7 @@ export default function ShortVideoCamera({ setTogglePhotoVideoShort }) {
                 type={type}
                 style={styles.camera_container}
             >
-                {isRecording && <TimeCounter />}
+                {isRecording && <TimeCounter Mycolor='white' val={-1} />}
                 <View style={styles.camera_Bottom}>
                     <View
                         style={{

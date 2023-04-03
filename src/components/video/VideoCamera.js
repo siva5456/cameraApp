@@ -67,6 +67,7 @@ export default function VideoCamera({ setTogglePhotoVideoShort }) {
   let stopRecording = () => {
     cameraRef.current.stopRecording();
     setIsRecording(false);
+    setToggleFlash(false)
   };
 
   if (!permission || hasMicrophonePermission === undefined) {
@@ -103,7 +104,7 @@ export default function VideoCamera({ setTogglePhotoVideoShort }) {
           style={styles.previw_image}
           source={{ uri: video.uri }}
           useNativeControls
-          resizeMode="contain"
+          resizeMode="cover"
           isLooping
         />
         <View
@@ -155,8 +156,7 @@ export default function VideoCamera({ setTogglePhotoVideoShort }) {
         type={type}
         style={styles.camera_container}
       >
-        {isRecording && <TimeCounter />}
-        {/* <TimeCounter/> */}
+        {isRecording && <TimeCounter Mycolor='white' val={-1}/>}
         <View style={styles.camera_Bottom}>
           <View
             style={{

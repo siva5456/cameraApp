@@ -6,6 +6,8 @@ import MyCamera from "./src/components/MyCamera";
 import ShowImage from "./src/components/photo/ShowImage";
 
 import VideoCamera from "./src/components/video/VideoCamera";
+import RecordAudio from "./src/components/recordAudio/RecordAudio";
+import QRcodeScanner from "./src/components/QRcodeScan/QRcodeScanner";
 
 const Stack = createStackNavigator();
 
@@ -32,6 +34,16 @@ export default function App() {
           <Stack.Screen
             name="VideoCamera"
             component={VideoCamera}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="RecordAudio"
+            component={RecordAudio}
+            options={{ headerShown: false }}
+          />
+           <Stack.Screen
+            name="QRcodeScanner"
+            component={QRcodeScanner}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

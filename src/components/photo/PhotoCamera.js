@@ -13,6 +13,8 @@ import {
 import { Camera, CameraType } from "expo-camera";
 import { shareAsync } from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
+import { Audio } from "expo-av";
+
 import { TouchableOpacity } from "react-native";
 
 function PhotoCamera({ navigation, setTogglePhotoVideoShort }) {
@@ -21,7 +23,6 @@ function PhotoCamera({ navigation, setTogglePhotoVideoShort }) {
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
     const [photo, setPhoto] = useState(undefined);
     const [album, setAlbum] = useState(false);
-
     const [toggleFlash, setToggleFlash] = useState(false);
     const [captureFlash, setCaptureFlash] = useState(false);
 
@@ -49,6 +50,13 @@ function PhotoCamera({ navigation, setTogglePhotoVideoShort }) {
         getAlbum();
     }, []);
 
+    async function playSound() {
+        const { sound } = await Audio.Sound.createAsync(
+            require("../../../assets/Camera_Shutter.mp3")
+        );
+        await sound.playAsync();
+    }
+
     let takePic = async () => {
         setCaptureFlash(true);
         let options = {
@@ -56,6 +64,7 @@ function PhotoCamera({ navigation, setTogglePhotoVideoShort }) {
             base64: true,
             exif: true,
         };
+        playSound();
         let newPhoto = await cameraRef.current.takePictureAsync(options);
         setPhoto(newPhoto);
         setCaptureFlash(false);
@@ -75,7 +84,7 @@ function PhotoCamera({ navigation, setTogglePhotoVideoShort }) {
 
     if (!permission.granted) {
         return (
-            <View>
+            <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
                 <Text>please allow camera to open in your device</Text>
                 <Button title="allow camera" onPress={requestPermission} />
             </View>
@@ -84,6 +93,7 @@ function PhotoCamera({ navigation, setTogglePhotoVideoShort }) {
 
     if (photo) {
         let sharePic = () => {
+            // console.log(photo.uri);
             shareAsync(photo.uri).then(() => {
                 setPhoto(undefined);
             });

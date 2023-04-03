@@ -18,12 +18,12 @@ const screenDimensions = Dimensions.get("screen");
 function ShowImage({ setTogglePhotoVideoShort }) {
     const [album, setAlbum] = useState([]);
     const [pic, setPic] = useState(null);
-    let picRef = useRef();
-    console.log(pic);
+    // let picRef = useRef();
+    // console.log(pic);
     // console.log(pic);
 
     // console.log(screenDimensions);
-
+// rn fetch blob
     const getAlbum = async () => {
         const DCIM = await MediaLibrary.getAlbumAsync("DCIM");
         // console.log(DCIM);
@@ -44,7 +44,11 @@ function ShowImage({ setTogglePhotoVideoShort }) {
     }, []);
 
     let sharePic = () => {
-        shareAsync(pic).then(() => { });
+        if(pic){
+            console.log(pic.uri);
+
+            // shareAsync(pic.uri).then(() => { });
+        }
     };
 
     if (album.length === null) {
@@ -91,7 +95,7 @@ function ShowImage({ setTogglePhotoVideoShort }) {
             </View>
 
             <View style={styles.container}>
-                <FlatList
+               {album && <FlatList
                     horizontal
                     data={album}
                     renderItem={({ item }) => {
@@ -100,7 +104,7 @@ function ShowImage({ setTogglePhotoVideoShort }) {
                             // <Pressable   onTouchMove={()=>setPic(item.uri)}>
 
                             <Image
-                                onTouchMove={() => setPic(item.uri)}
+                                onTouchMove={() => setPic(item)}
                                 // ref={picRef.current = item.uri}
                                 style={{
                                     alignSelf: "stretch",
@@ -115,7 +119,7 @@ function ShowImage({ setTogglePhotoVideoShort }) {
                             //    </Pressable>
                         );
                     }}
-                />
+                />}
             </View>
         </SafeAreaView>
     );

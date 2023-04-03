@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/camera.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.silversankar.MycameraApp"
     },
     "web": {
       "favicon": "./assets/camera.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a6e84085-6316-45d5-8a79-d7f5435fdfca"
+      }
     }
   }
 }
