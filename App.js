@@ -8,6 +8,8 @@ import ShowImage from "./src/components/photo/ShowImage";
 import VideoCamera from "./src/components/video/VideoCamera";
 import RecordAudio from "./src/components/recordAudio/RecordAudio";
 import QRcodeScanner from "./src/components/QRcodeScan/QRcodeScanner";
+import ImageSlider from "./src/components/ImageSlider";
+import RadioButtons from "./src/components/RadioButtons";
 
 const Stack = createStackNavigator();
 
@@ -41,12 +43,25 @@ export default function App() {
             component={RecordAudio}
             options={{ headerShown: false }}
           />
-           <Stack.Screen
+          <Stack.Screen
             name="QRcodeScanner"
             component={QRcodeScanner}
             options={{ headerShown: false }}
           />
+
+          <Stack.Screen
+            name="ImageSlider"
+            component={ImageSlider}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="RadioButtons"
+            component={RadioButtons}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
+
       </NavigationContainer>
 
       <StatusBar style="auto" />

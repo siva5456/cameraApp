@@ -20,8 +20,21 @@ export default function Home({ navigation }) {
         onPress={() => navigation.navigate("QRcodeScanner")}
         title="QRcodeScanner"
       />
+      <View style={{ margin: 5 }} />
+
+<Button
+        onPress={() => navigation.navigate("ImageSlider")}
+        title="ImageSlider"
+      />
+      <View style={{ margin: 5 }} />
+
+<Button
+        onPress={() => navigation.navigate("RadioButtons")}
+        title="RadioButtons"
+      />
 
     </View>
+    
   );
 }
 
